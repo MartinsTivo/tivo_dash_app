@@ -1,0 +1,36 @@
+{
+  "name": "tivo_dashboard_application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/main.bundle.js",
+  "scripts": {
+    "start": "electron ./dist/main.bundle.js",
+    "development": "rimraf dist && webpack --watch --config ./webpack.dev.js --progress --colors",
+    "production": "rimraf dist && webpack --config ./webpack.prod.js --progress --colors"
+  },
+  "author": "Martins Tiltins",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.4",
+    "css-loader": "^3.0.0",
+    "electron": "^5.0.6",
+    "electron-is-dev": "^1.1.0",
+    "file-loader": "^4.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.12.0",
+    "prettier": "^1.18.2",
+    "rimraf": "^2.6.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "update-electron-app": "^1.5.0",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.6"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
