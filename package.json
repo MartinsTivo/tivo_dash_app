@@ -8,6 +8,10 @@
     "development": "rimraf dist && webpack --watch --config ./webpack.dev.js --progress --colors",
     "production": "rimraf dist && webpack --config ./webpack.prod.js --progress --colors"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MartinsTivo/tivo_dash_app.git"
+   }, 
   "author": "Martins Tiltins",
   "license": "ISC",
   "devDependencies": {
