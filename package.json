@@ -4,7 +4,7 @@
   "description": "This is a TIVO Dashboard App",
   "main": "./dist/main.bundle.js",
   "scripts": {
-    "start": "electron ./dist/main.bundle.js",
+    "start": "electron .",
     "development": "rimraf dist && webpack --watch --config ./webpack.dev.js --progress --colors",
     "production": "rimraf dist && webpack --config ./webpack.prod.js --progress --colors"
   },

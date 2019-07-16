@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 let mainConfig = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/main/main.ts',
     target: 'electron-main',
     output: {
