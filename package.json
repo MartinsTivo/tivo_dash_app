@@ -1,6 +1,6 @@
 {
   "name": "tivo_dashboard_application",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a TIVO Dashboard App",
   "main": "./dist/main.bundle.js",
   "scripts": {
@@ -10,6 +10,10 @@
   },
   "build": {
     "appId": "com.tivodashboard.tivoapp",
+    "win": {
+	"target": "nsis",
+	"icon": "media/TIVO.ico"
+	},
     "productName": "TIVO Dashboard "
   },
   "repository": {
@@ -23,6 +27,7 @@
     "@types/react-dom": "^16.8.4",
     "css-loader": "^3.0.0",
     "electron": "^5.0.6",
+    "electron-builder": "^21.0.15",
     "electron-is-dev": "^1.1.0",
     "electron-packager": "^14.0.1",
     "electron-squirrel-startup": "^1.0.0",
