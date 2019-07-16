@@ -1,7 +1,7 @@
 {
   "name": "tivo_dashboard_application",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a TIVO Dashboard App",
   "main": "./dist/main.bundle.js",
   "scripts": {
     "start": "electron ./dist/main.bundle.js",

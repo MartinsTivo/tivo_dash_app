@@ -2,4 +2,6 @@ node_modules/
 package-lock.json
 .prettierrc.json.
 .prettierignore
-
+.DS_Store
+release-builds/
+._package.json
