@@ -26,7 +26,7 @@ if (!handleSquirrelEvent(app)) {
         )
     
         // Open Dev Tools
-        mainWindow.webContents.openDevTools();
+        // mainWindow.webContents.openDevTools();
     
         // When window is closed 
         mainWindow.on('closed', () => {
