@@ -1,1 +1,269 @@
-!function(e){var t={};function r(s){if(t[s])return t[s].exports;var n=t[s]={i:s,l:!1,exports:{}};return e[s].call(n.exports,n,n.exports,r),n.l=!0,n.exports}r.m=e,r.c=t,r.d=function(e,t,s){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:s})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var s=Object.create(null);if(r.r(s),Object.defineProperty(s,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var n in e)r.d(s,n,function(t){return e[t]}.bind(null,n));return s},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=4)}([function(e,t){e.exports=require("electron")},function(e,t){e.exports=require("path")},function(e,t){e.exports=function(e){if("string"!=typeof e)return!1;var t=e.match(r);if(!t)return!1;var o=t[1];if(!o)return!1;if(s.test(o)||n.test(o))return!0;return!1};var r=/^(?:\w+:)?\/\/(\S+)$/,s=/^localhost[\:?\d]*(?:[^\:?\d]\S*)?$/,n=/^[^\s\.]+\.\S{2,}$/},function(e,t){e.exports=require("url")},function(e,t,r){"use strict";r.r(t);var s=r(0),n=r(1),o=r(3);r(5)();const a=r(14);if(!function(e){if(1===process.argv.length)return!1;const t=r(15),s=r(1),n=s.resolve(process.execPath,".."),o=s.resolve(n,".."),a=s.resolve(s.join(o,"Update.exe")),i=s.basename(process.execPath),p=function(e){return function(e,r){let s;try{s=t.spawn(e,r,{detached:!0})}catch(e){}return s}(a,e)};switch(process.argv[1]){case"--squirrel-install":case"--squirrel-updated":return p(["--createShortcut",i]),setTimeout(e.quit,1e3),!0;case"--squirrel-uninstall":return p(["--removeShortcut",i]),setTimeout(e.quit,1e3),!0;case"--squirrel-obsolete":return e.quit(),!0}}(s.app)){let e;function i(){(e=new s.BrowserWindow({height:800,width:800})).loadURL(o.format({pathname:n.join(__dirname,"./index.html"),protocol:"file:",slashes:!0})),e.on("closed",()=>{e=null})}if(s.app.on("ready",i),s.app.on("window-all-closed",()=>{"darwin"!=process.platform&&s.app.quit()}),s.app.on("activate",()=>{null===e&&i()}),a)console.log("Running in development");else{const e=`${"https://github.com/MartinsTivo/tivo_dash_app.git"}/update/${process.platform}/${s.app.getVersion()}`;s.autoUpdater.setFeedURL({url:e}),setInterval(()=>{s.autoUpdater.checkForUpdates()},6e4),s.autoUpdater.on("update-downloaded",(e,t,r)=>{const n={type:"info",buttons:["Restart","Later"],title:"Application Update",message:"win32"===process.platform?t:r,detail:"A new version has been downloaded. Restart the application to apply the updates."};s.dialog.showMessageBox(n,e=>{0===e&&s.autoUpdater.quitAndInstall()})}),s.autoUpdater.on("error",e=>{console.error("There was a problem updating the application"),console.error(e)})}}},function(e,t,r){const s=r(6),n=r(2),o=r(7),a=r(8),i=r(9),p=r(1),c=r(10),u=r(11),{format:l}=r(12),d=r(13),h=l("%s/%s (%s: %s)",d.name,d.version,u.platform(),u.arch()),f=["darwin","win32"];function m(e){const{host:t,repo:r,updateInterval:s,logger:n,electron:o}=e,{app:i,autoUpdater:p,dialog:c}=o,u=`${t}/${r}/${process.platform}-${process.arch}/${i.getVersion()}`,l={"User-Agent":h};function d(...e){n.log(...e)}"undefined"==typeof process||!process.platform||f.includes(process.platform)?(d("feedURL",u),d("requestHeaders",l),p.setFeedURL(u,l),p.on("error",e=>{d("updater error"),d(e)}),p.on("checking-for-update",()=>{d("checking-for-update")}),p.on("update-available",()=>{d("update-available; downloading...")}),p.on("update-not-available",()=>{d("update-not-available")}),e.notifyUser&&p.on("update-downloaded",(e,t,r,s,n)=>{d("update-downloaded",arguments);const o={type:"info",buttons:["Restart","Later"],title:"Application Update",message:"win32"===process.platform?t:r,detail:"A new version has been downloaded. Restart the application to apply the updates."};c.showMessageBox(o,e=>{0===e&&p.quitAndInstall()})}),p.checkForUpdates(),setInterval(()=>{p.checkForUpdates()},a(s))):d(`Electron's autoUpdater does not support the '${process.platform}' platform`)}e.exports=function(e={}){if(e=function(e){const t={host:"https://update.electronjs.org",updateInterval:"10 minutes",logger:console,notifyUser:!0},{host:o,updateInterval:u,logger:l,notifyUser:d}=Object.assign({},t,e),h=e.electron||r(0);let f=e.repo;if(!f){const e=c.readFileSync(p.join(h.app.getAppPath(),"package.json")),t=JSON.parse(e.toString()),r=t.repository&&t.repository.url||t.repository,n=i(r);s(n,"repo not found. Add repository string to your app's package.json file"),f=`${n.user}/${n.repo}`}return s(f&&f.length&&f.includes("/"),"repo is required and should be in the format `owner/repo`"),s(n(o)&&o.startsWith("https"),"host must be a valid HTTPS URL"),s("string"==typeof u&&u.match(/^\d+/),"updateInterval must be a human-friendly string interval like `20 minutes`"),s(a(u)>=3e5,"updateInterval must be `5 minutes` or more"),s(l&&typeof l.log,"function"),{host:o,repo:f,updateInterval:u,logger:l,electron:h,notifyUser:d}}(e),o){const t="update-electron-app config looks good; aborting updates since app is in development mode";e.logger?e.logger.log(t):console.log(t)}else e.electron.app.isReady()?m(e):e.electron.app.on("ready",()=>m(e))}},function(e,t){e.exports=require("assert")},function(e,t,r){"use strict";const s=1===parseInt(process.env.ELECTRON_IS_DEV,10),n="ELECTRON_IS_DEV"in process.env;e.exports=n?s:process.defaultApp||/node_modules[\\\/]electron[\\\/]/.test(process.execPath)},function(e,t){var r=1e3,s=60*r,n=60*s,o=24*n,a=7*o,i=365.25*o;function p(e,t,r,s){var n=t>=1.5*r;return Math.round(e/r)+" "+s+(n?"s":"")}e.exports=function(e,t){t=t||{};var c=typeof e;if("string"===c&&e.length>0)return function(e){if((e=String(e)).length>100)return;var t=/^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(e);if(!t)return;var p=parseFloat(t[1]);switch((t[2]||"ms").toLowerCase()){case"years":case"year":case"yrs":case"yr":case"y":return p*i;case"weeks":case"week":case"w":return p*a;case"days":case"day":case"d":return p*o;case"hours":case"hour":case"hrs":case"hr":case"h":return p*n;case"minutes":case"minute":case"mins":case"min":case"m":return p*s;case"seconds":case"second":case"secs":case"sec":case"s":return p*r;case"milliseconds":case"millisecond":case"msecs":case"msec":case"ms":return p;default:return}}(e);if("number"===c&&isFinite(e))return t.long?function(e){var t=Math.abs(e);if(t>=o)return p(e,t,o,"day");if(t>=n)return p(e,t,n,"hour");if(t>=s)return p(e,t,s,"minute");if(t>=r)return p(e,t,r,"second");return e+" ms"}(e):function(e){var t=Math.abs(e);if(t>=o)return Math.round(e/o)+"d";if(t>=n)return Math.round(e/n)+"h";if(t>=s)return Math.round(e/s)+"m";if(t>=r)return Math.round(e/r)+"s";return e+"ms"}(e);throw new Error("val is not a non-empty string or a valid number. val="+JSON.stringify(e))}},function(e,t,r){"use strict";var s=r(2),n=/(?:(?:[^:]+:)?[\/][\/])?(?:.+@)?([^\/]+)([\/][^?#]+)/;e.exports=function(e,t){var r={};if(t=t||{},!e)return null;if(e.url&&(e=e.url),"string"!=typeof e)return null;var o=e.match(/^([\w-_]+)\/([\w-_\.]+)(?:#([\w-_\.]+))?$/),a=e.match(/^github:([\w-_]+)\/([\w-_\.]+)(?:#([\w-_\.]+))?$/),i=e.match(/^git@[\w-_\.]+:([\w-_]+)\/([\w-_\.]+)$/);if(o)r.user=o[1],r.repo=o[2],r.branch=o[3]||"master",r.host="github.com";else if(a)r.user=a[1],r.repo=a[2],r.branch=a[3]||"master",r.host="github.com";else if(i)r.user=i[1],r.repo=i[2].replace(/\.git$/i,""),r.branch="master",r.host="github.com";else{if(e=e.replace(/^git\+/,""),!s(e))return null;var p=e.match(n)||[],c=p[1],u=p[2];if(!c)return null;if("github.com"!==c&&"www.github.com"!==c&&!t.enterprise)return null;var l=u.match(/^\/([\w-_]+)\/([\w-_\.]+)(\/tree\/[\w-_\.\/]+)?(\/blob\/[\w-_\.\/]+)?/);if(!l)return null;r.user=l[1],r.repo=l[2].replace(/\.git$/i,""),r.host=c||"github.com",l[3]&&/^\/tree\/master\//.test(l[3])?(r.branch="master",r.path=l[3].replace(/\/$/,"")):l[3]?r.branch=l[3].replace(/^\/tree\//,"").match(/[\w-_.]+\/{0,1}[\w-_]+/)[0]:l[4]?r.branch=l[4].replace(/^\/blob\//,"").match(/[\w-_.]+\/{0,1}[\w-_]+/)[0]:r.branch="master"}return"github.com"===r.host?r.apiHost="api.github.com":r.apiHost=r.host+"/api/v3",r.tarball_url="https://"+r.apiHost+"/repos/"+r.user+"/"+r.repo+"/tarball/"+r.branch,r.clone_url="https://"+r.host+"/"+r.user+"/"+r.repo,"master"===r.branch?(r.https_url="https://"+r.host+"/"+r.user+"/"+r.repo,r.travis_url="https://travis-ci.org/"+r.user+"/"+r.repo,r.zip_url="https://"+r.host+"/"+r.user+"/"+r.repo+"/archive/master.zip"):(r.https_url="https://"+r.host+"/"+r.user+"/"+r.repo+"/blob/"+r.branch,r.travis_url="https://travis-ci.org/"+r.user+"/"+r.repo+"?branch="+r.branch,r.zip_url="https://"+r.host+"/"+r.user+"/"+r.repo+"/archive/"+r.branch+".zip"),r.path&&(r.https_url+=r.path),r.api_url="https://"+r.apiHost+"/repos/"+r.user+"/"+r.repo,r}},function(e,t){e.exports=require("fs")},function(e,t){e.exports=require("os")},function(e,t){e.exports=require("util")},function(e){e.exports=JSON.parse('{"_args":[["update-electron-app@1.5.0","C:\\\\Users\\\\martinstiltins\\\\Documents\\\\TIVO_Win"]],"_development":true,"_from":"update-electron-app@1.5.0","_id":"update-electron-app@1.5.0","_inBundle":false,"_integrity":"sha512-g7noW9JfQ8Hwq6zw9lmZei+R/ikOIBcaZ04TbmIcU5zNfv23HkN80QLLAyiR/47KvfS4sjnh2/wuDq5nh8+0mQ==","_location":"/update-electron-app","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"update-electron-app@1.5.0","name":"update-electron-app","escapedName":"update-electron-app","rawSpec":"1.5.0","saveSpec":null,"fetchSpec":"1.5.0"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/update-electron-app/-/update-electron-app-1.5.0.tgz","_spec":"1.5.0","_where":"C:\\\\Users\\\\martinstiltins\\\\Documents\\\\TIVO_Win","bugs":{"url":"https://github.com/electron/update-electron-app/issues"},"dependencies":{"electron-is-dev":"^0.3.0","github-url-to-object":"^4.0.4","is-url":"^1.2.4","ms":"^2.1.1"},"description":"A drop-in module that adds autoUpdating capabilities to Electron apps","devDependencies":{"jest":"^22.4.3","semantic-release":"^15.13.12","standard":"^11.0.1","standard-markdown":"^5.0.1","travis-deploy-once":"^4.4.1","tslint":"^5.10.0","typescript":"^2.8.3"},"homepage":"https://github.com/electron/update-electron-app#readme","jest":{"testURL":"http://localhost"},"license":"MIT","main":"index.js","name":"update-electron-app","repository":{"type":"git","url":"git+https://github.com/electron/update-electron-app.git"},"scripts":{"lint":"tslint -c tslint.json index.d.ts","semantic-release":"semantic-release","test":"jest && standard --fix && npm run lint && standard-markdown","travis-deploy-once":"travis-deploy-once","watch":"jest --watch --notify --notifyMode=change --coverage"},"standard":{"env":{"jest":true}},"types":"index.d.ts","version":"1.5.0"}')},function(e,t,r){"use strict";const s=r(0),n=s.app||s.remote.app,o="ELECTRON_IS_DEV"in process.env,a=1===parseInt(process.env.ELECTRON_IS_DEV,10);e.exports=o?a:!n.isPackaged},function(e,t){e.exports=require("child_process")}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/main/main.ts");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./node_modules/electron-is-dev/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/electron-is-dev/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nconst electron = __webpack_require__(/*! electron */ \"electron\");\n\nconst app = electron.app || electron.remote.app;\n\nconst isEnvSet = 'ELECTRON_IS_DEV' in process.env;\nconst getFromEnv = parseInt(process.env.ELECTRON_IS_DEV, 10) === 1;\n\nmodule.exports = isEnvSet ? getFromEnv : !app.isPackaged;\n\n\n//# sourceURL=webpack:///./node_modules/electron-is-dev/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/github-url-to-object/dist/commonjs.js":
+/*!************************************************************!*\
+  !*** ./node_modules/github-url-to-object/dist/commonjs.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar isUrl = __webpack_require__(/*! is-url */ \"./node_modules/is-url/index.js\")\n\nvar laxUrlRegex = /(?:(?:[^:]+:)?[/][/])?(?:.+@)?([^/]+)([/][^?#]+)/\n\nmodule.exports = function (repoUrl, opts) {\n  var obj = {}\n  opts = opts || {}\n\n  if (!repoUrl) { return null }\n\n  // Allow an object with nested `url` string\n  // (common practice in package.json files)\n  if (repoUrl.url) { repoUrl = repoUrl.url }\n\n  if (typeof repoUrl !== 'string') { return null }\n\n  var shorthand = repoUrl.match(/^([\\w-_]+)\\/([\\w-_\\.]+)(?:#([\\w-_\\.]+))?$/)\n  var mediumhand = repoUrl.match(/^github:([\\w-_]+)\\/([\\w-_\\.]+)(?:#([\\w-_\\.]+))?$/)\n  var antiquated = repoUrl.match(/^git@[\\w-_\\.]+:([\\w-_]+)\\/([\\w-_\\.]+)$/)\n\n  if (shorthand) {\n    obj.user = shorthand[1]\n    obj.repo = shorthand[2]\n    obj.branch = shorthand[3] || 'master'\n    obj.host = 'github.com'\n  } else if (mediumhand) {\n    obj.user = mediumhand[1]\n    obj.repo = mediumhand[2]\n    obj.branch = mediumhand[3] || 'master'\n    obj.host = 'github.com'\n  } else if (antiquated) {\n    obj.user = antiquated[1]\n    obj.repo = antiquated[2].replace(/\\.git$/i, '')\n    obj.branch = 'master'\n    obj.host = 'github.com'\n  } else {\n    // Turn git+http URLs into http URLs\n    repoUrl = repoUrl.replace(/^git\\+/, '')\n\n    if (!isUrl(repoUrl)) { return null }\n\n    var ref = repoUrl.match(laxUrlRegex) || [];\n    var hostname = ref[1];\n    var pathname = ref[2];\n    if (!hostname) { return null }\n    if (hostname !== 'github.com' && hostname !== 'www.github.com' && !opts.enterprise) { return null }\n\n    var parts = pathname.match(/^\\/([\\w-_]+)\\/([\\w-_\\.]+)(\\/tree\\/[\\w-_\\.\\/]+)?(\\/blob\\/[\\w-_\\.\\/]+)?/)\n    // ([\\w-_\\.]+)\n    if (!parts) { return null }\n    obj.user = parts[1]\n    obj.repo = parts[2].replace(/\\.git$/i, '')\n\n    obj.host = hostname || 'github.com'\n\n    if (parts[3] && /^\\/tree\\/master\\//.test(parts[3])) {\n      obj.branch = 'master'\n      obj.path = parts[3].replace(/\\/$/, '')\n    } else if (parts[3]) {\n      obj.branch = parts[3].replace(/^\\/tree\\//, '').match(/[\\w-_.]+\\/{0,1}[\\w-_]+/)[0]\n    } else if (parts[4]) {\n      obj.branch = parts[4].replace(/^\\/blob\\//, '').match(/[\\w-_.]+\\/{0,1}[\\w-_]+/)[0]\n    } else {\n      obj.branch = 'master'\n    }\n  }\n\n  if (obj.host === 'github.com') {\n    obj.apiHost = 'api.github.com'\n  } else {\n    obj.apiHost = (obj.host) + \"/api/v3\"\n  }\n\n  obj.tarball_url = \"https://\" + (obj.apiHost) + \"/repos/\" + (obj.user) + \"/\" + (obj.repo) + \"/tarball/\" + (obj.branch)\n  obj.clone_url = \"https://\" + (obj.host) + \"/\" + (obj.user) + \"/\" + (obj.repo)\n\n  if (obj.branch === 'master') {\n    obj.https_url = \"https://\" + (obj.host) + \"/\" + (obj.user) + \"/\" + (obj.repo)\n    obj.travis_url = \"https://travis-ci.org/\" + (obj.user) + \"/\" + (obj.repo)\n    obj.zip_url = \"https://\" + (obj.host) + \"/\" + (obj.user) + \"/\" + (obj.repo) + \"/archive/master.zip\"\n  } else {\n    obj.https_url = \"https://\" + (obj.host) + \"/\" + (obj.user) + \"/\" + (obj.repo) + \"/blob/\" + (obj.branch)\n    obj.travis_url = \"https://travis-ci.org/\" + (obj.user) + \"/\" + (obj.repo) + \"?branch=\" + (obj.branch)\n    obj.zip_url = \"https://\" + (obj.host) + \"/\" + (obj.user) + \"/\" + (obj.repo) + \"/archive/\" + (obj.branch) + \".zip\"\n  }\n\n  // Support deep paths (like lerna-style repos)\n  if (obj.path) {\n    obj.https_url += obj.path\n  }\n\n  obj.api_url = \"https://\" + (obj.apiHost) + \"/repos/\" + (obj.user) + \"/\" + (obj.repo)\n\n  return obj\n}\n\n\n\n//# sourceURL=webpack:///./node_modules/github-url-to-object/dist/commonjs.js?");
+
+/***/ }),
+
+/***/ "./node_modules/is-url/index.js":
+/*!**************************************!*\
+  !*** ./node_modules/is-url/index.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("\n/**\n * Expose `isUrl`.\n */\n\nmodule.exports = isUrl;\n\n/**\n * RegExps.\n * A URL must match #1 and then at least one of #2/#3.\n * Use two levels of REs to avoid REDOS.\n */\n\nvar protocolAndDomainRE = /^(?:\\w+:)?\\/\\/(\\S+)$/;\n\nvar localhostDomainRE = /^localhost[\\:?\\d]*(?:[^\\:?\\d]\\S*)?$/\nvar nonLocalhostDomainRE = /^[^\\s\\.]+\\.\\S{2,}$/;\n\n/**\n * Loosely validate a URL `string`.\n *\n * @param {String} string\n * @return {Boolean}\n */\n\nfunction isUrl(string){\n  if (typeof string !== 'string') {\n    return false;\n  }\n\n  var match = string.match(protocolAndDomainRE);\n  if (!match) {\n    return false;\n  }\n\n  var everythingAfterProtocol = match[1];\n  if (!everythingAfterProtocol) {\n    return false;\n  }\n\n  if (localhostDomainRE.test(everythingAfterProtocol) ||\n      nonLocalhostDomainRE.test(everythingAfterProtocol)) {\n    return true;\n  }\n\n  return false;\n}\n\n\n//# sourceURL=webpack:///./node_modules/is-url/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/update-electron-app/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/update-electron-app/index.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const assert = __webpack_require__(/*! assert */ \"assert\")\nconst isURL = __webpack_require__(/*! is-url */ \"./node_modules/is-url/index.js\")\nconst isDev = __webpack_require__(/*! electron-is-dev */ \"./node_modules/update-electron-app/node_modules/electron-is-dev/index.js\")\nconst ms = __webpack_require__(/*! ms */ \"./node_modules/update-electron-app/node_modules/ms/index.js\")\nconst gh = __webpack_require__(/*! github-url-to-object */ \"./node_modules/github-url-to-object/dist/commonjs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst fs = __webpack_require__(/*! fs */ \"fs\")\nconst os = __webpack_require__(/*! os */ \"os\")\nconst {format} = __webpack_require__(/*! util */ \"util\")\nconst pkg = __webpack_require__(/*! ./package.json */ \"./node_modules/update-electron-app/package.json\")\nconst userAgent = format(\n  '%s/%s (%s: %s)',\n  pkg.name,\n  pkg.version,\n  os.platform(),\n  os.arch()\n)\nconst supportedPlatforms = ['darwin', 'win32']\n\nmodule.exports = function updater (opts = {}) {\n  // check for bad input early, so it will be logged during development\n  opts = validateInput(opts)\n\n  // don't attempt to update during development\n  if (isDev) {\n    const message = 'update-electron-app config looks good; aborting updates since app is in development mode'\n    opts.logger ? opts.logger.log(message) : console.log(message)\n    return\n  }\n\n  opts.electron.app.isReady()\n    ? initUpdater(opts)\n    : opts.electron.app.on('ready', () => initUpdater(opts))\n}\n\nfunction initUpdater (opts) {\n  const {host, repo, updateInterval, logger, electron} = opts\n  const {app, autoUpdater, dialog} = electron\n  const feedURL = `${host}/${repo}/${process.platform}-${process.arch}/${app.getVersion()}`\n  const requestHeaders = {'User-Agent': userAgent}\n\n  function log (...args) {\n    logger.log(...args)\n  }\n\n  // exit early on unsupported platforms, e.g. `linux`\n  if (typeof process !== 'undefined' && process.platform && !supportedPlatforms.includes(process.platform)) {\n    log(`Electron's autoUpdater does not support the '${process.platform}' platform`)\n    return\n  }\n\n  log('feedURL', feedURL)\n  log('requestHeaders', requestHeaders)\n  autoUpdater.setFeedURL(feedURL, requestHeaders)\n\n  autoUpdater.on('error', err => {\n    log('updater error')\n    log(err)\n  })\n\n  autoUpdater.on('checking-for-update', () => {\n    log('checking-for-update')\n  })\n\n  autoUpdater.on('update-available', () => {\n    log('update-available; downloading...')\n  })\n\n  autoUpdater.on('update-not-available', () => {\n    log('update-not-available')\n  })\n\n  if (opts.notifyUser) {\n    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateURL) => {\n      log('update-downloaded', arguments)\n\n      const dialogOpts = {\n        type: 'info',\n        buttons: ['Restart', 'Later'],\n        title: 'Application Update',\n        message: process.platform === 'win32' ? releaseNotes : releaseName,\n        detail: 'A new version has been downloaded. Restart the application to apply the updates.'\n      }\n\n      dialog.showMessageBox(dialogOpts, (response) => {\n        if (response === 0) autoUpdater.quitAndInstall()\n      })\n    })\n  }\n\n  // check for updates right away and keep checking later\n  autoUpdater.checkForUpdates()\n  setInterval(() => { autoUpdater.checkForUpdates() }, ms(updateInterval))\n}\n\nfunction validateInput (opts) {\n  const defaults = {\n    host: 'https://update.electronjs.org',\n    updateInterval: '10 minutes',\n    logger: console,\n    notifyUser: true\n  }\n  const {host, updateInterval, logger, notifyUser} = Object.assign({}, defaults, opts)\n\n  // allows electron to be mocked in tests\n  const electron = opts.electron || __webpack_require__(/*! electron */ \"electron\")\n\n  let repo = opts.repo\n  if (!repo) {\n    const pkgBuf = fs.readFileSync(path.join(electron.app.getAppPath(), 'package.json'))\n    const pkg = JSON.parse(pkgBuf.toString())\n    const repoString = (pkg.repository && pkg.repository.url) || pkg.repository\n    const repoObject = gh(repoString)\n    assert(\n      repoObject,\n      'repo not found. Add repository string to your app\\'s package.json file'\n    )\n    repo = `${repoObject.user}/${repoObject.repo}`\n  }\n\n  assert(\n    repo && repo.length && repo.includes('/'),\n    'repo is required and should be in the format `owner/repo`'\n  )\n\n  assert(\n    isURL(host) && host.startsWith('https'),\n    'host must be a valid HTTPS URL'\n  )\n\n  assert(\n    typeof updateInterval === 'string' && updateInterval.match(/^\\d+/),\n    'updateInterval must be a human-friendly string interval like `20 minutes`'\n  )\n\n  assert(\n    ms(updateInterval) >= 5 * 60 * 1000,\n    'updateInterval must be `5 minutes` or more'\n  )\n\n  assert(\n    logger && typeof logger.log,\n    'function'\n  )\n\n  return {host, repo, updateInterval, logger, electron, notifyUser}\n}\n\n\n//# sourceURL=webpack:///./node_modules/update-electron-app/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/update-electron-app/node_modules/electron-is-dev/index.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/update-electron-app/node_modules/electron-is-dev/index.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nconst getFromEnv = parseInt(process.env.ELECTRON_IS_DEV, 10) === 1;\nconst isEnvSet = 'ELECTRON_IS_DEV' in process.env;\n\nmodule.exports = isEnvSet ? getFromEnv : (process.defaultApp || /node_modules[\\\\/]electron[\\\\/]/.test(process.execPath));\n\n\n//# sourceURL=webpack:///./node_modules/update-electron-app/node_modules/electron-is-dev/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/update-electron-app/node_modules/ms/index.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/update-electron-app/node_modules/ms/index.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("/**\n * Helpers.\n */\n\nvar s = 1000;\nvar m = s * 60;\nvar h = m * 60;\nvar d = h * 24;\nvar w = d * 7;\nvar y = d * 365.25;\n\n/**\n * Parse or format the given `val`.\n *\n * Options:\n *\n *  - `long` verbose formatting [false]\n *\n * @param {String|Number} val\n * @param {Object} [options]\n * @throws {Error} throw an error if val is not a non-empty string or a number\n * @return {String|Number}\n * @api public\n */\n\nmodule.exports = function(val, options) {\n  options = options || {};\n  var type = typeof val;\n  if (type === 'string' && val.length > 0) {\n    return parse(val);\n  } else if (type === 'number' && isFinite(val)) {\n    return options.long ? fmtLong(val) : fmtShort(val);\n  }\n  throw new Error(\n    'val is not a non-empty string or a valid number. val=' +\n      JSON.stringify(val)\n  );\n};\n\n/**\n * Parse the given `str` and return milliseconds.\n *\n * @param {String} str\n * @return {Number}\n * @api private\n */\n\nfunction parse(str) {\n  str = String(str);\n  if (str.length > 100) {\n    return;\n  }\n  var match = /^(-?(?:\\d+)?\\.?\\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(\n    str\n  );\n  if (!match) {\n    return;\n  }\n  var n = parseFloat(match[1]);\n  var type = (match[2] || 'ms').toLowerCase();\n  switch (type) {\n    case 'years':\n    case 'year':\n    case 'yrs':\n    case 'yr':\n    case 'y':\n      return n * y;\n    case 'weeks':\n    case 'week':\n    case 'w':\n      return n * w;\n    case 'days':\n    case 'day':\n    case 'd':\n      return n * d;\n    case 'hours':\n    case 'hour':\n    case 'hrs':\n    case 'hr':\n    case 'h':\n      return n * h;\n    case 'minutes':\n    case 'minute':\n    case 'mins':\n    case 'min':\n    case 'm':\n      return n * m;\n    case 'seconds':\n    case 'second':\n    case 'secs':\n    case 'sec':\n    case 's':\n      return n * s;\n    case 'milliseconds':\n    case 'millisecond':\n    case 'msecs':\n    case 'msec':\n    case 'ms':\n      return n;\n    default:\n      return undefined;\n  }\n}\n\n/**\n * Short format for `ms`.\n *\n * @param {Number} ms\n * @return {String}\n * @api private\n */\n\nfunction fmtShort(ms) {\n  var msAbs = Math.abs(ms);\n  if (msAbs >= d) {\n    return Math.round(ms / d) + 'd';\n  }\n  if (msAbs >= h) {\n    return Math.round(ms / h) + 'h';\n  }\n  if (msAbs >= m) {\n    return Math.round(ms / m) + 'm';\n  }\n  if (msAbs >= s) {\n    return Math.round(ms / s) + 's';\n  }\n  return ms + 'ms';\n}\n\n/**\n * Long format for `ms`.\n *\n * @param {Number} ms\n * @return {String}\n * @api private\n */\n\nfunction fmtLong(ms) {\n  var msAbs = Math.abs(ms);\n  if (msAbs >= d) {\n    return plural(ms, msAbs, d, 'day');\n  }\n  if (msAbs >= h) {\n    return plural(ms, msAbs, h, 'hour');\n  }\n  if (msAbs >= m) {\n    return plural(ms, msAbs, m, 'minute');\n  }\n  if (msAbs >= s) {\n    return plural(ms, msAbs, s, 'second');\n  }\n  return ms + ' ms';\n}\n\n/**\n * Pluralization helper.\n */\n\nfunction plural(ms, msAbs, n, name) {\n  var isPlural = msAbs >= n * 1.5;\n  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');\n}\n\n\n//# sourceURL=webpack:///./node_modules/update-electron-app/node_modules/ms/index.js?");
+
+/***/ }),
+
+/***/ "./node_modules/update-electron-app/package.json":
+/*!*******************************************************!*\
+  !*** ./node_modules/update-electron-app/package.json ***!
+  \*******************************************************/
+/*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, bugs, bundleDependencies, dependencies, deprecated, description, devDependencies, homepage, jest, license, main, name, repository, scripts, standard, types, version, default */
+/***/ (function(module) {
+
+eval("module.exports = JSON.parse(\"{\\\"_from\\\":\\\"update-electron-app\\\",\\\"_id\\\":\\\"update-electron-app@1.5.0\\\",\\\"_inBundle\\\":false,\\\"_integrity\\\":\\\"sha512-g7noW9JfQ8Hwq6zw9lmZei+R/ikOIBcaZ04TbmIcU5zNfv23HkN80QLLAyiR/47KvfS4sjnh2/wuDq5nh8+0mQ==\\\",\\\"_location\\\":\\\"/update-electron-app\\\",\\\"_phantomChildren\\\":{},\\\"_requested\\\":{\\\"type\\\":\\\"tag\\\",\\\"registry\\\":true,\\\"raw\\\":\\\"update-electron-app\\\",\\\"name\\\":\\\"update-electron-app\\\",\\\"escapedName\\\":\\\"update-electron-app\\\",\\\"rawSpec\\\":\\\"\\\",\\\"saveSpec\\\":null,\\\"fetchSpec\\\":\\\"latest\\\"},\\\"_requiredBy\\\":[\\\"#DEV:/\\\",\\\"#USER\\\"],\\\"_resolved\\\":\\\"https://registry.npmjs.org/update-electron-app/-/update-electron-app-1.5.0.tgz\\\",\\\"_shasum\\\":\\\"492cb904db07a0b28dbd83fb52e0fe500bbe3463\\\",\\\"_spec\\\":\\\"update-electron-app\\\",\\\"_where\\\":\\\"/Users/martinstiltins/Desktop/TIVO_Dashboard_Application\\\",\\\"bugs\\\":{\\\"url\\\":\\\"https://github.com/electron/update-electron-app/issues\\\"},\\\"bundleDependencies\\\":false,\\\"dependencies\\\":{\\\"electron-is-dev\\\":\\\"^0.3.0\\\",\\\"github-url-to-object\\\":\\\"^4.0.4\\\",\\\"is-url\\\":\\\"^1.2.4\\\",\\\"ms\\\":\\\"^2.1.1\\\"},\\\"deprecated\\\":false,\\\"description\\\":\\\"A drop-in module that adds autoUpdating capabilities to Electron apps\\\",\\\"devDependencies\\\":{\\\"jest\\\":\\\"^22.4.3\\\",\\\"semantic-release\\\":\\\"^15.13.12\\\",\\\"standard\\\":\\\"^11.0.1\\\",\\\"standard-markdown\\\":\\\"^5.0.1\\\",\\\"travis-deploy-once\\\":\\\"^4.4.1\\\",\\\"tslint\\\":\\\"^5.10.0\\\",\\\"typescript\\\":\\\"^2.8.3\\\"},\\\"homepage\\\":\\\"https://github.com/electron/update-electron-app#readme\\\",\\\"jest\\\":{\\\"testURL\\\":\\\"http://localhost\\\"},\\\"license\\\":\\\"MIT\\\",\\\"main\\\":\\\"index.js\\\",\\\"name\\\":\\\"update-electron-app\\\",\\\"repository\\\":{\\\"type\\\":\\\"git\\\",\\\"url\\\":\\\"git+https://github.com/electron/update-electron-app.git\\\"},\\\"scripts\\\":{\\\"lint\\\":\\\"tslint -c tslint.json index.d.ts\\\",\\\"semantic-release\\\":\\\"semantic-release\\\",\\\"test\\\":\\\"jest && standard --fix && npm run lint && standard-markdown\\\",\\\"travis-deploy-once\\\":\\\"travis-deploy-once\\\",\\\"watch\\\":\\\"jest --watch --notify --notifyMode=change --coverage\\\"},\\\"standard\\\":{\\\"env\\\":{\\\"jest\\\":true}},\\\"types\\\":\\\"index.d.ts\\\",\\\"version\\\":\\\"1.5.0\\\"}\");\n\n//# sourceURL=webpack:///./node_modules/update-electron-app/package.json?");
+
+/***/ }),
+
+/***/ "./src/main/main.ts":
+/*!**************************!*\
+  !*** ./src/main/main.ts ***!
+  \**************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ \"electron\");\n/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! url */ \"url\");\n/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(url__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\n__webpack_require__(/*! update-electron-app */ \"./node_modules/update-electron-app/index.js\")();\nconst isDev = __webpack_require__(/*! electron-is-dev */ \"./node_modules/electron-is-dev/index.js\");\n// this should be placed at top of main.js to handle setup events quickly\n// squirrel event handled and app will exit in 1000ms, so don't do anything else\nif (!handleSquirrelEvent(electron__WEBPACK_IMPORTED_MODULE_0__[\"app\"])) {\n    let mainWindow;\n    function createWindow() {\n        mainWindow = new electron__WEBPACK_IMPORTED_MODULE_0__[\"BrowserWindow\"]({\n            height: 800,\n            width: 800\n        });\n        mainWindow.loadURL(url__WEBPACK_IMPORTED_MODULE_2__[\"format\"]({\n            pathname: path__WEBPACK_IMPORTED_MODULE_1__[\"join\"](__dirname, './index.html'),\n            protocol: 'file:',\n            slashes: true\n        }));\n        // Open Dev Tools\n        // mainWindow.webContents.openDevTools();\n        // When window is closed \n        mainWindow.on('closed', () => {\n            // Close all window elements and handle final actions\n            mainWindow = null;\n        });\n    }\n    electron__WEBPACK_IMPORTED_MODULE_0__[\"app\"].on('ready', createWindow);\n    electron__WEBPACK_IMPORTED_MODULE_0__[\"app\"].on('window-all-closed', () => {\n        if (process.platform != 'darwin') {\n            electron__WEBPACK_IMPORTED_MODULE_0__[\"app\"].quit();\n        }\n    });\n    electron__WEBPACK_IMPORTED_MODULE_0__[\"app\"].on('activate', () => {\n        if (mainWindow === null) {\n            createWindow();\n        }\n    });\n    if (isDev) {\n        console.log(\"Running in development\");\n    }\n    else {\n        const server = 'https://github.com/MartinsTivo/tivo_dash_app.git';\n        const feed = `${server}/update/${process.platform}/${electron__WEBPACK_IMPORTED_MODULE_0__[\"app\"].getVersion()}`;\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"autoUpdater\"].setFeedURL({ url: feed });\n        setInterval(() => {\n            electron__WEBPACK_IMPORTED_MODULE_0__[\"autoUpdater\"].checkForUpdates();\n        }, 60000);\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"autoUpdater\"].on('update-downloaded', (event, releaseNotes, releaseName) => {\n            const dialogOpts = {\n                type: 'info',\n                buttons: ['Restart', 'Later'],\n                title: 'Application Update',\n                message: process.platform === 'win32' ? releaseNotes : releaseName,\n                detail: 'A new version has been downloaded. Restart the application to apply the updates.'\n            };\n            electron__WEBPACK_IMPORTED_MODULE_0__[\"dialog\"].showMessageBox(dialogOpts, (response) => {\n                if (response === 0)\n                    electron__WEBPACK_IMPORTED_MODULE_0__[\"autoUpdater\"].quitAndInstall();\n            });\n        });\n        electron__WEBPACK_IMPORTED_MODULE_0__[\"autoUpdater\"].on('error', message => {\n            console.error('There was a problem updating the application');\n            console.error(message);\n        });\n    }\n}\nfunction handleSquirrelEvent(application) {\n    if (process.argv.length === 1) {\n        return false;\n    }\n    const ChildProcess = __webpack_require__(/*! child_process */ \"child_process\");\n    const path = __webpack_require__(/*! path */ \"path\");\n    const appFolder = path.resolve(process.execPath, '..');\n    const rootAtomFolder = path.resolve(appFolder, '..');\n    const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));\n    const exeName = path.basename(process.execPath);\n    const spawn = function (command, args) {\n        let spawnedProcess, error;\n        try {\n            spawnedProcess = ChildProcess.spawn(command, args, {\n                detached: true\n            });\n        }\n        catch (error) { }\n        return spawnedProcess;\n    };\n    const spawnUpdate = function (args) {\n        return spawn(updateDotExe, args);\n    };\n    const squirrelEvent = process.argv[1];\n    switch (squirrelEvent) {\n        case '--squirrel-install':\n        case '--squirrel-updated':\n            // Optionally do things such as:\n            // - Add your .exe to the PATH\n            // - Write to the registry for things like file associations and\n            //   explorer context menus\n            // Install desktop and start menu shortcuts\n            spawnUpdate(['--createShortcut', exeName]);\n            setTimeout(application.quit, 1000);\n            return true;\n        case '--squirrel-uninstall':\n            // Undo anything you did in the --squirrel-install and\n            // --squirrel-updated handlers\n            // Remove desktop and start menu shortcuts\n            spawnUpdate(['--removeShortcut', exeName]);\n            setTimeout(application.quit, 1000);\n            return true;\n        case '--squirrel-obsolete':\n            // This is called on the outgoing version of your app before\n            // we update to the new version - it's the opposite of\n            // --squirrel-updated\n            application.quit();\n            return true;\n    }\n}\n;\n\n\n//# sourceURL=webpack:///./src/main/main.ts?");
+
+/***/ }),
+
+/***/ "assert":
+/*!*************************!*\
+  !*** external "assert" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"assert\");\n\n//# sourceURL=webpack:///external_%22assert%22?");
+
+/***/ }),
+
+/***/ "child_process":
+/*!********************************!*\
+  !*** external "child_process" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"child_process\");\n\n//# sourceURL=webpack:///external_%22child_process%22?");
+
+/***/ }),
+
+/***/ "electron":
+/*!***************************!*\
+  !*** external "electron" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"electron\");\n\n//# sourceURL=webpack:///external_%22electron%22?");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"fs\");\n\n//# sourceURL=webpack:///external_%22fs%22?");
+
+/***/ }),
+
+/***/ "os":
+/*!*********************!*\
+  !*** external "os" ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"os\");\n\n//# sourceURL=webpack:///external_%22os%22?");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"path\");\n\n//# sourceURL=webpack:///external_%22path%22?");
+
+/***/ }),
+
+/***/ "url":
+/*!**********************!*\
+  !*** external "url" ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"url\");\n\n//# sourceURL=webpack:///external_%22url%22?");
+
+/***/ }),
+
+/***/ "util":
+/*!***********************!*\
+  !*** external "util" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"util\");\n\n//# sourceURL=webpack:///external_%22util%22?");
+
+/***/ })
+
+/******/ });

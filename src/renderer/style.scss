@@ -1,3 +1,65 @@
+$tivo_blue: #1a3358;
+$tivo_red: #B81738;
+$white: white;
+$tivo_font: 'Open Sans' sans-serif;
+
+// Secondary colors
+$tivo_sec_red: #DE4352;
+$tivo_sec_salmon: #EA694E;
+$tivo_sec_orange: #EA9D31;
+$tivo_sec_lgreen: #B0A839;
+$tivo_sec_dgreen: #74A53A;
+$tivo_sec_turq: #0093AD;
+$tivo_sec_blue: #4E76B8;
+$tivo_sec_purple: #706CA8;
+
+html {
+    font-family: $tivo_font;
+}
+
 .app {
     color: red;
 }
+
+#menu {
+    width: 88px;
+    background-color: $tivo_blue;
+    color: $white;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    font-size: 12px;
+}
+    
+.menuLink {
+    color: $white;
+    text-decoration: none;
+    display: block;
+    margin-top: 16px;
+    text-align: center;
+    font-family: 'Open Sans';
+    i {
+        font-size: 22px;
+        margin-top: 4px;
+    }
+}
+
+.MuiFab-root {
+    background-color: $tivo_red!important;
+}
+
+#webframe {
+    position: absolute;
+    top: 0px;
+    left: 88px;
+    right: 0px;
+    bottom: 0px;
+    
+    iframe {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+

@@ -3,9 +3,11 @@ import * as ReactDOM from 'react-dom';
 
 import './style.scss';
 
+// File import 
+
+import Body from './components/body';
+
 ReactDOM.render(
-    <div>
-        <h4>TIVO DASHBOARD</h4>
-    </div>,
+    <Body />,
     document.getElementById('app')
 );
