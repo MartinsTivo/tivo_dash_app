@@ -5,5 +5,5 @@ package-lock.json
 .DS_Store
 release-builds/
 ._package.json
-.dist/main.bundle.js
-.dist/rerender.bundle.js
+main.bundle.js
+rerender.bundle.js
