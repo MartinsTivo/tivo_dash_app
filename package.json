@@ -1,6 +1,6 @@
 {
   "name": "tivo_dashboard_application",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This is a TIVO Dashboard App",
   "main": "./dist/main.bundle.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-router-dom": "^4.3.4",
     "css-loader": "^3.0.0",
+    "dotenv": "^8.0.0",
     "electron": "^5.0.6",
     "electron-builder": "^21.0.15",
     "electron-is-dev": "^1.1.0",

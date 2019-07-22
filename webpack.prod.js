@@ -45,7 +45,7 @@ let mainConfig = {
 };
 
 let rendererConfig = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/renderer/renderer.tsx',
     target: 'electron-renderer',
     output: {
